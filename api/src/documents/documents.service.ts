@@ -91,8 +91,9 @@ export class DocumentsService {
   async list(orgId: string) {
     const { data, error } = await this.db
       .from('documents')
-      .select('id, title, status, mime_type, created_at')
+      .select('id, title, status, mime_type, created_at, summary, error')
       .eq('org_id', orgId)
+      .neq('status', 'uploading')
       .order('created_at', { ascending: false });
     if (error) throw new InternalServerErrorException(error.message);
     return data;
